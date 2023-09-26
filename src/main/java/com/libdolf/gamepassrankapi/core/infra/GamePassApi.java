@@ -7,26 +7,28 @@ import com.libdolf.gamepassrankapi.data.adapters.GamePassApiGateway;
 import com.libdolf.gamepassrankapi.domain.entities.Game;
 import com.sun.jdi.PrimitiveValue;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-@Service
+@Component
 public class GamePassApi implements GamePassApiGateway {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private Gson gson;
 
-    @Value("${gamepass.urlIds}")
+    @Value("${GAMEPASS_IDS_URL}")
     private String urlIds;
-    @Value("${gamepass.urlGames}")
+    @Value("${GAMEPASS_GAMES_URL}")
     private String urlGames;
 
     @Override
