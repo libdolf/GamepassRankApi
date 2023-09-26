@@ -17,7 +17,7 @@ public class Game {
     private String developerName;
     private String publisherName;
     private LocalDateTime releaseDate;
-    private Set<String> categories;
+    private String categories;
     private Double reviewScore;
     private Integer reviewCount;
 }
