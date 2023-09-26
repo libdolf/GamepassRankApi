@@ -2,6 +2,7 @@ package com.libdolf.gamepassrankapi.core.infra;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.libdolf.gamepassrankapi.data.adapters.GamePassApiGateway;
 import com.libdolf.gamepassrankapi.domain.entities.Game;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 @Component
@@ -45,6 +48,11 @@ public class GamePassApi implements GamePassApiGateway {
 
         List<Game> games = new ArrayList<>();
         for (JsonObject g : gamesJson){
+            List<JsonElement> categories = g.get("Categories").getAsJsonArray().asList();
+            List<String> categoriesString = new ArrayList<>();
+            for(JsonElement category : categories){
+                categoriesString.add(category.getAsString());
+            }
             Game game = Game.builder()
                     .id(g.get("StoreId").getAsString())
                     .title(g.get("ProductTitle").getAsString())
@@ -52,7 +60,8 @@ public class GamePassApi implements GamePassApiGateway {
                     .publisherName(g.get("PublisherName").getAsString())
                     .reviewScore(g.get("ReviewScore").getAsDouble())
                     .reviewCount(g.get("ReviewCount").getAsInt())
-                    .categories(g.get("Categories").getAsJsonArray().toString())
+                    .releaseDate(LocalDateTime.parse(g.get("OriginalReleaseDate").getAsString(), DateTimeFormatter.ISO_DATE_TIME))
+                    .categories(categoriesString)
                     .build();
             games.add(game);
         }
